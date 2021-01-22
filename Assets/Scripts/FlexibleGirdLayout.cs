@@ -16,14 +16,18 @@ public class FlexibleGirdLayout : LayoutGroup
         base.CalculateLayoutInputHorizontal();
 
         float sqrRt = Mathf.Sqrt(transform.childCount);
-        rows = Mathf.CeilToInt(sqrRt);
-        columns = Mathf.CeilToInt(sqrRt);
+        //rows = Mathf.CeilToInt(sqrRt);
+        //columns = Mathf.CeilToInt(sqrRt);
 
-        float parentWidth = rectTransform.rect.width;
+        columns = 4;
+        rows = Mathf.CeilToInt(transform.childCount / columns);
+
+        float parentWidth = rectTransform.rect.width - 30;
         float parentHeight = rectTransform.rect.height;
 
         float cellWidth = parentWidth / (float)columns;
-        float cellHeight = parentHeight / (float)rows;
+        //float cellHeight = parentHeight / (float)rows;
+        float cellHeight = 200f;
 
         cellSize.x = cellWidth;
         cellSize.y = cellHeight;
