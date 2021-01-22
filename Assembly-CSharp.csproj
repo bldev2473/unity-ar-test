@@ -68,9 +68,11 @@
     <Compile Include="Assets\ExampleAssets\Scripts\AnchorCreator.cs" />
     <Compile Include="Assets\Scenes\ARScene\ARScene.cs" />
     <Compile Include="Assets\Scenes\MainUIScene\MainUIController.cs" />
+    <Compile Include="Assets\Scripts\FlexibleGirdLayout.cs" />
     <Compile Include="Assets\Scripts\GridManager.cs" />
     <Compile Include="Assets\Scripts\Helper.cs" />
     <Compile Include="Assets\Scripts\MultiSelectEvent.cs" />
+    <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\TapToPlaceObject.cs" />
     <None Include="Assets\ExampleAssets\Shaders\FeatheredPlaneShader.shader" />
     <Reference Include="UnityEngine">
