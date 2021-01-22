@@ -37,6 +37,7 @@ public class GridManager : MonoBehaviour
             // Apply EventTrigger to GameObject
             EventTrigger trigger = newObj.AddComponent<EventTrigger>();
             EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerClick;
 
             // Apply images to GameObject
 
