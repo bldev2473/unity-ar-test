@@ -28,6 +28,7 @@ public class FlexibleGirdLayout : LayoutGroup
         float cellWidth = parentWidth / (float)columns;
         //float cellHeight = parentHeight / (float)rows;
         float cellHeight = 200f;
+        parentHeight = cellHeight * rows;
 
         cellSize.x = cellWidth;
         cellSize.y = cellHeight;
