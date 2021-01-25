@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class GridManager : MonoBehaviour
 {
-    public GameObject capturedImagePrefab;
+    public GameObject capturedButtonImagePrefab;
     private Object[] textures;
     private Sprite sprite;
     private Texture2D myTexture;
@@ -32,12 +32,7 @@ public class GridManager : MonoBehaviour
 
         for (int i = 0; i < textures.Length; i++)
         {
-            newObj = (GameObject)Instantiate(capturedImagePrefab, transform);
-
-            // Apply EventTrigger to GameObject
-            EventTrigger trigger = newObj.AddComponent<EventTrigger>();
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerClick;
+            newObj = (GameObject)Instantiate(capturedButtonImagePrefab, transform);
 
             // Apply images to GameObject
 
@@ -50,8 +45,8 @@ public class GridManager : MonoBehaviour
             GameObject go = newObj;
 
             // Callback
-            entry.callback.AddListener((eventData) => { ImageClickEvent(go); });
-            trigger.triggers.Add(entry);
+            //entry.callback.AddListener((eventData) => { ImageClickEvent(go); });
+            //trigger.triggers.Add(entry);
         }
     }
 
