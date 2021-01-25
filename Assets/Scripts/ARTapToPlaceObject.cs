@@ -16,6 +16,7 @@ public class ARTapToPlaceObject : MonoBehaviour
     private ARRaycastManager arManager;
     private Pose placementPose;
     public List<GameObject> dominos;
+    public GameObject domino;
 
     private bool onClick = false;
 
@@ -61,7 +62,8 @@ public class ARTapToPlaceObject : MonoBehaviour
     private void PlaceObject()
     {
         Debug.Log("objectToPlace" + objectToPlace.ToString());
-        GameObject domino = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        //GameObject domino = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+        domino = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
         Debug.Log("domino" + domino.ToString());
         dominos.Add(domino);
     }
