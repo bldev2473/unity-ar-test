@@ -8,6 +8,8 @@ public class MultiSelectEvent : MonoBehaviour
     public GameObject scollViewContent;
     public GameObject thisButton;
 
+    private bool toggleMultiSelect = false;
+
     public T FindChildrenWithTag<T>(GameObject parent, string tag, bool forceActive = false) where T : Component
     {
         if (parent == null) { throw new System.ArgumentNullException(); }
@@ -43,22 +45,17 @@ public class MultiSelectEvent : MonoBehaviour
 
     public void DrawSelectButton()
     {
-        Image[] images = FindChildrensWithTag<Image>(scollViewContent, "CapturedFiles");
-
-        for (int i = 0; i < images.Length; i++)
+        if (!toggleMultiSelect)
         {
-            try
-            {
-                Component toggles = FindChildrenWithTag<Component>(scollViewContent, "ToggleForSelection");
-                toggles.gameObject.SetActive(false);
-
-            }
-            catch
-            {
-                Debug.Log(i);
-            }
+            UIGameObjectHandler.setActiveStatus(GridManager.toggles, true);
+            toggleMultiSelect = true;
+        }
+        else
+        {
+            UIGameObjectHandler.setActiveStatus(GridManager.toggles, false);
+            toggleMultiSelect = false;
         }
 
-        thisButton.SetActive(false);
+        //thisButton.SetActive(false);
     }
 }

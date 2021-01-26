@@ -11,6 +11,8 @@ public class GridManager : MonoBehaviour
     private Sprite sprite;
     private Texture2D myTexture;
 
+    public static GameObject[] toggles;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +50,9 @@ public class GridManager : MonoBehaviour
             //entry.callback.AddListener((eventData) => { ImageClickEvent(go); });
             //trigger.triggers.Add(entry);
         }
+
+        toggles = GameObject.FindGameObjectsWithTag("ToggleForSelection");
+        UIGameObjectHandler.setActiveStatus(toggles, false);
     }
 
     void ImageClickEvent(GameObject go)
