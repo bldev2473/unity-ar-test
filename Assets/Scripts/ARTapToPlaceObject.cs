@@ -57,7 +57,8 @@ public class ARTapToPlaceObject : MonoBehaviour
     void Update()
     {
         // Load model button
-        if (!isModelBtnLoaded) {
+        if (!isModelBtnLoaded)
+        {
             modelBtns = GameObject.FindGameObjectsWithTag("ModelBtn");
 
             if (modelBtns.Length > 0)
@@ -71,7 +72,7 @@ public class ARTapToPlaceObject : MonoBehaviour
                 isModelBtnLoaded = true;
             }
         }
-        
+
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
@@ -161,8 +162,16 @@ public class ARTapToPlaceObject : MonoBehaviour
         Debug.Log("placeObjectButton.GetComponent<Image>().sprite.name: " + placeObjectButton.GetComponent<Image>().sprite.name);
         Debug.Log("placeObjectButton.GetComponent<Button>().GetComponent<Image>().name: " + placeObjectButton.GetComponent<Button>().GetComponent<Image>().name);
 
-        string dir = "Models/" + placeObjectButton.GetComponent<Button>().GetComponent<Image>().name + "/" + placeObjectButton.GetComponent<Button>().GetComponent<Image>().name;
-        dir = "Models/DragonSD_A/DragonSD_A";
+        // Get clicked button object info
+        string modelName = "";
+        if (ModelInfo.ModelInformation.Count > 0)
+        {
+            modelName = ModelInfo.ModelInformation[0];
+        }
+
+        string dir = "Models/" + modelName + "/" + modelName;
+        Debug.Log("modelName: " + modelName);
+        //dir = "Models/DragonSD_A/DragonSD_A";
         string aniDir = "Animations/Walking";
         Debug.Log("dir: " + dir);
 
