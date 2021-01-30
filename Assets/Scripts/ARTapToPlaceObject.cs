@@ -35,30 +35,11 @@ public class ARTapToPlaceObject : MonoBehaviour
 
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
-    // SetActive status
-    //public GameObject modelButton;
-    //public GameObject modelScrollView;
-    //public GameObject photoButton;
-    //public GameObject decoButton;
-
     // Start is called before the first frame update
     void Start()
     {
         arManager = FindObjectOfType<ARRaycastManager>();
         Debug.Log("arManager: " + arManager.ToString());
-
-        //dominos = new List<GameObject>();           
-
-        //// Apply EventTrigger to GameObject
-        //EventTrigger trigger = placeObjectButton.AddComponent<EventTrigger>();
-        //EventTrigger.Entry entry = new EventTrigger.Entry();
-        //entry.eventID = EventTriggerType.PointerClick;
-
-        //// Callback
-        //entry.callback.AddListener((eventData) => { ButtonClickEvent(); });
-
-        //Debug.Log("placeObjectButton: " + placeObjectButton.ToString());
-        //placeObjectButton.onClick.AddListener(ButtonClickEvent);
     }
 
     // Update is called once per frame
@@ -84,11 +65,6 @@ public class ARTapToPlaceObject : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
-        //if (placementPoseIsValid)
-        //{
-        //    PlaceObject();
-        //}
-
         // Move object to touched position
         if (TryGetTouchPosition() != null)
         {
@@ -104,10 +80,10 @@ public class ARTapToPlaceObject : MonoBehaviour
                 if (dis >= 0.01f)
                 {
                     //// Rotation
-                    //Vector3 dir = targetPosition - spawnedObject.transform.position;
-                    //Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
-                    //Quaternion targetRot = Quaternion.LookRotation(dirXZ);
-                    //spawnedObject.transform.rotation = Quaternion.RotateTowards(spawnedObject.transform.rotation, targetRot, 550.0f * Time.deltaTime);
+                    Vector3 dir = targetPosition - spawnedObject.transform.position;
+                    Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
+                    Quaternion targetRot = Quaternion.LookRotation(dirXZ);
+                    spawnedObject.transform.rotation = Quaternion.RotateTowards(spawnedObject.transform.rotation, targetRot, 550.0f * Time.deltaTime);
 
                     // Movement
                     //spawnedObject.transform.localPosition = Vector3.MoveTowards(transform.position, hitPose.position, speed * Time.deltaTime);
@@ -151,35 +127,12 @@ public class ARTapToPlaceObject : MonoBehaviour
     {
         Debug.Log("objectToPlace: " + objectToPlace.ToString());
 
-        /*
-        // Domino
-        ////GameObject domino = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
-        //domino = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
-        //Debug.Log("domino" + domino.ToString());
-        //dominos.Add(domino);
-
-        //// Throw Object
-        //GameObject newObj = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
-        //float force = 5f;
-        //newObj.GetComponent<Rigidbody>().velocity = new Vector3(0, force, 0);
-
-        // Create and move Object
-        //spawnedObject = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
-        */
-
-        // Sprint#1 create model
+        // Create model
         GameObject[] respawn = GameObject.FindGameObjectsWithTag("ModelName");
         foreach (var t in respawn)
         {
             Destroy(t);
         }
-
-        Debug.Log("placeObjectButton.ToString(): " + placeObjectButton.ToString());
-        Debug.Log("placeObjectButton.GetComponent<Button>(): " + placeObjectButton.GetComponent<Button>().ToString());
-        Debug.Log("placeObjectButton.GetComponent<Image>(): " + placeObjectButton.GetComponent<Image>().ToString());
-        Debug.Log("placeObjectButton.GetComponent<Image>().name: " + placeObjectButton.GetComponent<Image>().name);
-        Debug.Log("placeObjectButton.GetComponent<Image>().sprite.name: " + placeObjectButton.GetComponent<Image>().sprite.name);
-        Debug.Log("placeObjectButton.GetComponent<Button>().GetComponent<Image>().name: " + placeObjectButton.GetComponent<Button>().GetComponent<Image>().name);
 
         // Get clicked button object info
         string modelName = "";
@@ -190,7 +143,7 @@ public class ARTapToPlaceObject : MonoBehaviour
 
         string dir = "Models/" + modelName + "/" + modelName;
         Debug.Log("modelName: " + modelName);
-        //dir = "Models/DragonSD_A/DragonSD_A";
+
         string aniDir = "Animations/Walking";
         Debug.Log("dir: " + dir);
 
@@ -204,7 +157,6 @@ public class ARTapToPlaceObject : MonoBehaviour
             spawnedObject.tag = "ModelName";
             animator = spawnedObject.GetComponent<Animator>();
             Debug.Log(animator);
-
             spawnedObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(aniDir);
         }
     }
