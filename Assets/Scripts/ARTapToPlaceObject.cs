@@ -12,15 +12,12 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(ARRaycastManager))]
 public class ARTapToPlaceObject : MonoBehaviour
 {
-    public GameObject objectToPlace;
+    //public GameObject objectToPlace;
+    //public GameObject placeObjectButton;
+
     public GameObject placementIndicator;
     private ARRaycastManager arManager;
     private Pose placementPose;
-
-    public List<GameObject> dominos;
-    public GameObject domino;
-
-    public GameObject placeObjectButton;
 
     private bool placementPoseIsValid = false;
 
@@ -66,29 +63,26 @@ public class ARTapToPlaceObject : MonoBehaviour
         UpdatePlacementIndicator();
 
         // Move object to touched position
-        if (TryGetTouchPosition() != null)
+        if (spawnedObject != null && TryGetTouchPosition() != null)
         {
             Debug.Log("Move object to touched position");
 
-            if (spawnedObject != null)
+            float dis = Vector3.Distance(spawnedObject.transform.position, targetPosition);
+            Debug.Log("dis: " + dis);
+
+            float speed = 2.0f;
+
+            if (dis >= 0.01f)
             {
-                float dis = Vector3.Distance(spawnedObject.transform.position, targetPosition);
-                Debug.Log("dis: " + dis);
+                // Rotation
+                Vector3 dir = targetPosition - spawnedObject.transform.position;
+                Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
+                Quaternion targetRot = Quaternion.LookRotation(dirXZ);
+                spawnedObject.transform.rotation = Quaternion.RotateTowards(spawnedObject.transform.rotation, targetRot, 550.0f * Time.deltaTime);
 
-                float speed = 2.0f;
-
-                if (dis >= 0.01f)
-                {
-                    //// Rotation
-                    Vector3 dir = targetPosition - spawnedObject.transform.position;
-                    Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
-                    Quaternion targetRot = Quaternion.LookRotation(dirXZ);
-                    spawnedObject.transform.rotation = Quaternion.RotateTowards(spawnedObject.transform.rotation, targetRot, 550.0f * Time.deltaTime);
-
-                    // Movement
-                    //spawnedObject.transform.localPosition = Vector3.MoveTowards(transform.position, hitPose.position, speed * Time.deltaTime);
-                    spawnedObject.transform.localPosition = Vector3.Lerp(spawnedObject.transform.position, targetPosition, speed * Time.deltaTime);
-                }
+                // Movement
+                //spawnedObject.transform.localPosition = Vector3.MoveTowards(transform.position, hitPose.position, speed * Time.deltaTime);
+                spawnedObject.transform.localPosition = Vector3.Lerp(spawnedObject.transform.position, targetPosition, speed * Time.deltaTime);
             }
         }
     }
@@ -123,7 +117,7 @@ public class ARTapToPlaceObject : MonoBehaviour
         return targetPosition;
     }
 
-    private void PlaceObject()
+    private bool PlaceObject()
     {
         Debug.Log("objectToPlace: " + objectToPlace.ToString());
 
@@ -159,6 +153,8 @@ public class ARTapToPlaceObject : MonoBehaviour
             Debug.Log(animator);
             spawnedObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(aniDir);
         }
+
+        return true;
     }
 
     private void UpdatePlacementPose()
