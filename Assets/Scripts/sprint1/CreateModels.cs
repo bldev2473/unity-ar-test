@@ -43,7 +43,6 @@ public class CreateModels : MonoBehaviour
 
     void ButtonClickEvent(GameObject clickedButton)
     {
-        ModelInfo.ModelInformation.Clear();
-        ModelInfo.ModelInformation.Add(clickedButton.name);
+        ARTapToPlaceObject.Instance.ButtonClickEvent(clickedButton.name);
     }
 }
