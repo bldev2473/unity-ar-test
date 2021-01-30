@@ -12,9 +12,12 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(ARRaycastManager))]
 public class ARTapToPlaceObject : MonoBehaviour
 {
-    //public GameObject objectToPlace;
+    // Static singleton property
+    public static ARTapToPlaceObject Instance { get; private set; }
+
     //public GameObject placeObjectButton;
 
+    public GameObject objectToPlace;
     public GameObject placementIndicator;
     private ARRaycastManager arManager;
     private Pose placementPose;
@@ -28,13 +31,19 @@ public class ARTapToPlaceObject : MonoBehaviour
     private Vector2 touchPosition;
     private Vector3 targetPosition;
     private GameObject spawnedObject;
-    bool isMoving = false;
+    private bool isMoving = false;
 
-    static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
+    // Not allow Scroll view to detect touch event
+    public GameObject scrollView;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Save a reference to the ARTapToPlaceObject component as our singleton instance
+        Instance = this;
+
         arManager = FindObjectOfType<ARRaycastManager>();
         Debug.Log("arManager: " + arManager.ToString());
     }
@@ -42,23 +51,8 @@ public class ARTapToPlaceObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Load model button
-        if (!isModelBtnLoaded)
-        {
-            modelBtns = GameObject.FindGameObjectsWithTag("ModelBtn");
-
-            if (modelBtns.Length > 0)
-            {
-                Debug.Log("modelBtns: " + modelBtns.ToString());
-                for (int i = 0; i < modelBtns.Length; i++)
-                {
-                    modelBtns[i].GetComponent<Button>().onClick.AddListener(ButtonClickEvent);
-                }
-
-                isModelBtnLoaded = true;
-            }
-        }
-
+        // Get scroll view size
+        
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
@@ -87,12 +81,12 @@ public class ARTapToPlaceObject : MonoBehaviour
         }
     }
 
-    private void ButtonClickEvent()
+    public void ButtonClickEvent(string modelName)
     {
         Debug.Log("ButtonClickEvent()");
         if (placementPoseIsValid)
         {
-            PlaceObject();
+            PlaceObject(modelName);
         }
     }
 
@@ -117,22 +111,15 @@ public class ARTapToPlaceObject : MonoBehaviour
         return targetPosition;
     }
 
-    private bool PlaceObject()
+    private void PlaceObject(string modelName)
     {
         Debug.Log("objectToPlace: " + objectToPlace.ToString());
 
-        // Create model
+        // Destroy existing model
         GameObject[] respawn = GameObject.FindGameObjectsWithTag("ModelName");
         foreach (var t in respawn)
         {
             Destroy(t);
-        }
-
-        // Get clicked button object info
-        string modelName = "";
-        if (ModelInfo.ModelInformation.Count > 0)
-        {
-            modelName = ModelInfo.ModelInformation[0];
         }
 
         string dir = "Models/" + modelName + "/" + modelName;
@@ -141,6 +128,7 @@ public class ARTapToPlaceObject : MonoBehaviour
         string aniDir = "Animations/Walking";
         Debug.Log("dir: " + dir);
 
+        // Create a new model with animation
         Animator animator;
 
         if (Resources.LoadAll<GameObject>(dir).Length != 0)
@@ -153,8 +141,6 @@ public class ARTapToPlaceObject : MonoBehaviour
             Debug.Log(animator);
             spawnedObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(aniDir);
         }
-
-        return true;
     }
 
     private void UpdatePlacementPose()
