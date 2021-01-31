@@ -15,13 +15,14 @@ public class ARTapToPlaceObject : MonoBehaviour
     // Static singleton property
     public static ARTapToPlaceObject Instance { get; private set; }
 
-    //public GameObject placeObjectButton;
-
+    // Assign prefab in insepctor and place object with button click event
+    public Button placeObjectButton;
     public GameObject objectToPlace;
-    public GameObject placementIndicator;
-    private ARRaycastManager arManager;
-    private Pose placementPose;
 
+    // Object placement
+    private ARRaycastManager arManager;
+    public GameObject placementIndicator;
+    private Pose placementPose;
     private bool placementPoseIsValid = false;
 
     private GameObject[] modelBtns;
@@ -46,6 +47,15 @@ public class ARTapToPlaceObject : MonoBehaviour
 
         arManager = FindObjectOfType<ARRaycastManager>();
         Debug.Log("arManager: " + arManager.ToString());
+
+        // Assign prefab in insepctor and place object with button click event
+        if (placeObjectButton != null && objectToPlace != null)
+        {
+            placeObjectButton.onClick.AddListener(() =>
+            {
+                Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+            });
+        }
     }
 
     // Update is called once per frame
@@ -113,8 +123,6 @@ public class ARTapToPlaceObject : MonoBehaviour
 
     private void PlaceObject(string modelName)
     {
-        Debug.Log("objectToPlace: " + objectToPlace.ToString());
-
         // Destroy existing model
         GameObject[] respawn = GameObject.FindGameObjectsWithTag("ModelName");
         foreach (var t in respawn)
