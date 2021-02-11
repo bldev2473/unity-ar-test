@@ -32,6 +32,8 @@ public class ARDominoGame : MonoBehaviour
     private float force = 20;
     public Text forceText;
 
+    public Button destoryAllObjectButton;
+
     // Touch and move
     private Vector2 touchPosition;
     private Vector3 targetPosition;
@@ -95,6 +97,16 @@ public class ARDominoGame : MonoBehaviour
             {
                 force -= 5;
                 forceText.text = force.ToString();
+            });
+        }
+
+        // Assign prefab in insepctor and place object with button click event
+        if (destoryAllObjectButton != null)
+        {
+            destoryAllObjectButton.onClick.AddListener(() =>
+            {
+                Destroy(GameObject.FindWithTag("Dominos"));
+                dominos.Clear();
             });
         }
     }
@@ -189,6 +201,7 @@ public class ARDominoGame : MonoBehaviour
         {
             placementIndicator.SetActive(true);
             placementIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
+            Debug.Log("placementIndicator: " + placementIndicator.ToString());
         }
         else
         {
