@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARSubsystems;
 using System;
 
@@ -11,6 +10,9 @@ using UnityEngine.EventSystems;
 
 public class ARDominoGame : MonoBehaviour
 {
+    // AR Camera
+    private Camera arCamera;
+
     // Static singleton property
     public static ARDominoGame Instance { get; private set; }
 
@@ -50,6 +52,9 @@ public class ARDominoGame : MonoBehaviour
 
         arManager = FindObjectOfType<ARRaycastManager>();
         Debug.Log("arManager: " + arManager.ToString());
+
+        arCamera = FindObjectOfType<ARSessionOrigin>().camera;
+        Debug.Log("arCamera: " + arCamera.ToString());
 
         // Assign prefab in insepctor and place object with button click event
         if (placeObjectButton != null && objectToPlace != null)
@@ -179,15 +184,18 @@ public class ARDominoGame : MonoBehaviour
 
     private void UpdatePlacementPose()
     {
-        var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        var screenCenter = arCamera.GetComponent<Camera>().ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        Debug.Log("screenCenter: " + screenCenter);
         //var hits = new List<ARRaycastHit>();
         arManager.Raycast(screenCenter, hits, TrackableType.Planes);
 
         placementPoseIsValid = hits.Count > 0;
+        Debug.Log("placementPoseIsValid: " + placementPoseIsValid.ToString());
 
         if (placementPoseIsValid)
         {
             placementPose = hits[0].pose;
+            Debug.Log("placementPose: " + placementPose.ToString());
 
             var cameraForward = -1 * Camera.current.transform.forward;
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
