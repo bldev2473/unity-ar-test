@@ -10,8 +10,9 @@ using UnityEngine.EventSystems;
 
 public class ARDominoGame : MonoBehaviour
 {
-    // AR Camera
+    // AR Foundation
     private Camera arCamera;
+    private ARSession arSession;
 
     // Static singleton property
     public static ARDominoGame Instance { get; private set; }
@@ -22,6 +23,8 @@ public class ARDominoGame : MonoBehaviour
 
     // Object placement
     private ARRaycastManager arManager;
+    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
     public GameObject placementIndicator;
     private Pose placementPose;
     private bool placementPoseIsValid = false;
@@ -42,8 +45,6 @@ public class ARDominoGame : MonoBehaviour
     private GameObject spawnedObject;
     private bool isMoving = false;
 
-    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +56,9 @@ public class ARDominoGame : MonoBehaviour
 
         arCamera = FindObjectOfType<ARSessionOrigin>().camera;
         Debug.Log("arCamera: " + arCamera.ToString());
+
+        arSession = FindObjectOfType<ARSession>();
+        Debug.Log("arSession: " + arSession.ToString());
 
         // Assign prefab in insepctor and place object with button click event
         if (placeObjectButton != null && objectToPlace != null)
@@ -113,6 +117,8 @@ public class ARDominoGame : MonoBehaviour
             {
                 Destroy(GameObject.FindWithTag("Dominos"));
                 dominos.Clear();
+
+
             });
         }
     }
