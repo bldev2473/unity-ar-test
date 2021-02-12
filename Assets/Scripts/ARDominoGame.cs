@@ -78,7 +78,8 @@ public class ARDominoGame : MonoBehaviour
                     Vector3 direction = firstDomino.transform.position - transform.position;
                     //firstDomino.GetComponent<Rigidbody>().AddForceAtPosition(direction.normalized, transform.position);
                     Debug.Log("rigidbody: " + firstDomino.GetComponentInChildren<Rigidbody>());
-                    var cameraForward = Camera.current.transform.forward;
+
+                    var cameraForward = arCamera.GetComponent<Camera>().transform.forward;
                     var cameraBearing = new Vector3(cameraForward.x, 0, 0).normalized;
                     firstDomino.GetComponentInChildren<Rigidbody>().AddForce(cameraBearing * force);
                 }
@@ -197,7 +198,7 @@ public class ARDominoGame : MonoBehaviour
             placementPose = hits[0].pose;
             Debug.Log("placementPose: " + placementPose.ToString());
 
-            var cameraForward = -1 * Camera.current.transform.forward;
+            var cameraForward = -1 * arCamera.GetComponent<Camera>().transform.forward;
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
