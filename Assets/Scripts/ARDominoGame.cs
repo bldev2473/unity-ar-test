@@ -118,7 +118,7 @@ public class ARDominoGame : MonoBehaviour
                 Destroy(GameObject.FindWithTag("Dominos"));
                 dominos.Clear();
 
-
+                arSession.Reset();
             });
         }
     }
@@ -129,6 +129,7 @@ public class ARDominoGame : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
+        /*
         // Move object to touched position
         if (spawnedObject != null && TryGetTouchPosition() != null)
         {
@@ -152,6 +153,7 @@ public class ARDominoGame : MonoBehaviour
                 spawnedObject.transform.localPosition = Vector3.Lerp(spawnedObject.transform.position, targetPosition, speed * Time.deltaTime);
             }
         }
+        */
     }
 
     public void ButtonClickEvent(string modelName)
