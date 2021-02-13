@@ -120,6 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 497130135674109206}
   - component: {fileID: 65220097869713383}
+  - component: {fileID: 1565554824265972729}
   m_Layer: 0
   m_Name: Domino Game Piece
   m_TagString: Dominos
@@ -165,3 +166,24 @@ MonoBehaviour:
   Sensitivity: 1
   Damping: -1
   remainingScale: {x: 0, y: 0, z: 0}
+--- !u!114 &1565554824265972729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4812091336518031475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc7c91b26689a054d88448aba6dfe424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Use:
+    Filter: 0
+    IgnoreStartedOverGui: 1
+    RequiredFingerCount: 0
+    RequiredMouseButtons: 0
+    RequiredSelectable: {fileID: 0}
+  Axis: {x: 0, y: -1, z: 0}
+  Space: 1
+  Sensitivity: 1
