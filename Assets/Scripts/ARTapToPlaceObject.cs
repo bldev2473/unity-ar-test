@@ -12,6 +12,10 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(ARRaycastManager))]
 public class ARTapToPlaceObject : MonoBehaviour
 {
+    // AR Foundation
+    private Camera arCamera;
+    private ARSession arSession;
+
     // Static singleton property
     public static ARTapToPlaceObject Instance { get; private set; }
 
@@ -24,9 +28,6 @@ public class ARTapToPlaceObject : MonoBehaviour
     public GameObject placementIndicator;
     private Pose placementPose;
     private bool placementPoseIsValid = false;
-
-    private GameObject[] modelBtns;
-    private bool isModelBtnLoaded = false;
 
     // Touch and move
     private Vector2 touchPosition;
@@ -47,6 +48,12 @@ public class ARTapToPlaceObject : MonoBehaviour
 
         arManager = FindObjectOfType<ARRaycastManager>();
         Debug.Log("arManager: " + arManager.ToString());
+
+        arCamera = FindObjectOfType<ARSessionOrigin>().camera;
+        Debug.Log("arCamera: " + arCamera.ToString());
+
+        arSession = FindObjectOfType<ARSession>();
+        Debug.Log("arSession: " + arSession.ToString());
 
         // Assign prefab in insepctor and place object with button click event
         if (placeObjectButton != null && objectToPlace != null)
@@ -153,7 +160,7 @@ public class ARTapToPlaceObject : MonoBehaviour
 
     private void UpdatePlacementPose()
     {
-        var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        var screenCenter = arCamera.GetComponent<Camera>().ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
         //var hits = new List<ARRaycastHit>();
         arManager.Raycast(screenCenter, hits, TrackableType.Planes);
 
@@ -163,7 +170,7 @@ public class ARTapToPlaceObject : MonoBehaviour
         {
             placementPose = hits[0].pose;
 
-            var cameraForward = -1 * Camera.current.transform.forward;
+            var cameraForward = -1 * arCamera.GetComponent<Camera>().transform.forward;
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
