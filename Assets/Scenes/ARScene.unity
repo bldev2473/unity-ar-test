@@ -133,7 +133,6 @@ GameObject:
   - component: {fileID: 36653845}
   - component: {fileID: 36653844}
   - component: {fileID: 36653843}
-  - component: {fileID: 36653842}
   m_Layer: 5
   m_Name: Destory Button
   m_TagString: Untagged
@@ -161,19 +160,6 @@ RectTransform:
   m_AnchoredPosition: {x: -250, y: -250}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &36653842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 36653840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7122590a2d1a046b1ae7ac5c93491f4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneName: ARScene
 --- !u!114 &36653843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,18 +202,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 36653844}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 36653842}
-        m_MethodName: OnClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &36653844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1275,6 +1250,11 @@ PrefabInstance:
       propertyPath: placementIndicator
       value: 
       objectReference: {fileID: 537285049}
+    - target: {fileID: 411219992646191221, guid: 7e027c19833e04d22b38e0dc336160e4,
+        type: 3}
+      propertyPath: destoryAllObjectButton
+      value: 
+      objectReference: {fileID: 36653843}
     - target: {fileID: 411219992646191222, guid: 7e027c19833e04d22b38e0dc336160e4,
         type: 3}
       propertyPath: m_Name
@@ -1707,7 +1687,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 20
+  far clip plane: 500
   field of view: 60
   orthographic: 0
   orthographic size: 5

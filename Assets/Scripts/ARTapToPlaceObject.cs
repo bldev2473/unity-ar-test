@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARSubsystems;
 using System;
 
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(ARRaycastManager))]
 public class ARTapToPlaceObject : MonoBehaviour
@@ -23,6 +23,8 @@ public class ARTapToPlaceObject : MonoBehaviour
     public Button placeObjectButton;
     public GameObject objectToPlace;
 
+    public Button destoryAllObjectButton;
+
     // Object placement
     private ARRaycastManager arManager;
     public GameObject placementIndicator;
@@ -36,9 +38,6 @@ public class ARTapToPlaceObject : MonoBehaviour
     private bool isMoving = false;
 
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-
-    // Not allow Scroll view to detect touch event
-    public GameObject scrollView;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +60,16 @@ public class ARTapToPlaceObject : MonoBehaviour
             placeObjectButton.onClick.AddListener(() =>
             {
                 Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+            });
+        }
+
+        // Assign prefab in insepctor and place object with button click event
+        if (destoryAllObjectButton != null)
+        {
+            destoryAllObjectButton.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("ARScene");
+                arSession.Reset();
             });
         }
     }
