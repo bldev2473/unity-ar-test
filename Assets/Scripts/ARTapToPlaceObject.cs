@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using System;
 
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -59,7 +59,7 @@ public class ARTapToPlaceObject : MonoBehaviour
         {
             placeObjectButton.onClick.AddListener(() =>
             {
-                Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+                spawnedObject = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
             });
         }
 
@@ -77,8 +77,6 @@ public class ARTapToPlaceObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Get scroll view size
-        
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
@@ -120,19 +118,31 @@ public class ARTapToPlaceObject : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
-            touchPosition = Input.GetTouch(0).position;
-            Debug.Log("touchPosition: " + touchPosition.ToString());
+            Touch touch = Input.GetTouch(0);
 
-            bool arManagerRaycast = arManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon);
-            Debug.Log("arManagerRaycast: " + arManagerRaycast.ToString());
-
-            if (arManagerRaycast)
+            // Prevent touch input on UI object from AR feature
+            if (touch.phase == TouchPhase.Began)
             {
-                var hitPose = hits[0].pose;
-                targetPosition = hitPose.position;
+                touchPosition = touch.position;
+                Debug.Log("touchPosition: " + touchPosition.ToString());
+
+                bool isOverUI = touchPosition.IsPointOverUIObject();
+
+                if (!isOverUI)
+                {
+                    bool arManagerRaycast = arManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon);
+                    Debug.Log("arManagerRaycast: " + arManagerRaycast.ToString());
+
+                    if (arManagerRaycast)
+                    {
+                        var hitPose = hits[0].pose;
+                        targetPosition = hitPose.position;
+
+                        Debug.Log("targetPosition: " + targetPosition.ToString());
+                    }
+                }
             }
         }
-        Debug.Log("targetPosition: " + targetPosition.ToString());
 
         return targetPosition;
     }
