@@ -72,3 +72,7 @@ crashlytics-build.properties
 
 # Xcode Project
 /unity-ar-test/
+
+# Assets from asset store
+/Assets/3D\ Model/
+/Assets/Plugins/
