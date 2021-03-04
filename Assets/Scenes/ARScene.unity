@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44794506, g: 0.4979465, b: 0.575487, a: 1}
+  m_IndirectSpecularColor: {r: 0.44794524, g: 0.49794728, b: 0.57548815, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -813,12 +813,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160405716}
   m_CullTransparentMesh: 0
---- !u!1 &165585583 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3587983384120605701, guid: b7398e3ccf4864144b6320253ceb80a9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1210293559}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &198226114
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,20 +1190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc98219a83dff145947365dc914d06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TapThreshold: 0.2
-  SwipeThreshold: 100
-  ReferenceDpi: 200
-  GuiLayers:
-    serializedVersion: 2
-    m_Bits: 4
-  RecordFingers: 1
-  RecordThreshold: 5
-  RecordLimit: 10
-  SimulateMultiFingers: 1
-  PinchTwistKey: 306
-  MovePivotKey: 308
-  MultiDragKey: 308
-  FingerTexture: {fileID: 2800000, guid: 25c48be3a87ea0f489a6d41c9c9a2194, type: 3}
 --- !u!4 &320395345
 Transform:
   m_ObjectHideFlags: 0
@@ -1454,7 +1434,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &616990588
 Transform:
   m_ObjectHideFlags: 0
@@ -1463,7 +1443,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 616990587}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.38411975, y: 0.3356433, z: -0.25783265}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1810530606}
@@ -1501,15 +1481,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fd4802e02ac74b29b70684d7005a9f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeObjectButton: {fileID: 1982821559}
-  objectToPlace: {fileID: 4812091336518031475, guid: 6c220b4750bc1492981363ec91fc8aa6,
-    type: 3}
-  placementIndicator: {fileID: 165585583}
-  pushDominoButton: {fileID: 278040738}
-  increaseForceButton: {fileID: 838511162}
-  decreaseForceButton: {fileID: 1724308344}
-  forceText: {fileID: 1980960151}
-  destoryAllObjectButton: {fileID: 36653843}
+  placeObjectButton: {fileID: 0}
+  objectToPlace: {fileID: 0}
+  placementIndicator: {fileID: 0}
+  pushDominoButton: {fileID: 0}
+  increaseForceButton: {fileID: 0}
+  decreaseForceButton: {fileID: 0}
+  forceText: {fileID: 0}
+  destoryAllObjectButton: {fileID: 0}
 --- !u!4 &661285348
 Transform:
   m_ObjectHideFlags: 0
@@ -1608,12 +1587,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
---- !u!1 &692255151 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4812091336518031475, guid: 6c220b4750bc1492981363ec91fc8aa6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1863976436}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &692255154 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 497130135674109206, guid: 6c220b4750bc1492981363ec91fc8aa6,
@@ -1750,7 +1723,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1840,7 +1813,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 817649096}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.042, y: 0.058, z: -0.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 71997228}
@@ -2048,7 +2021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7122590a2d1a046b1ae7ac5c93491f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: MainScene
+  sceneName: 
 --- !u!114 &941240485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2253,13 +2226,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd4bfed11ddc41bc8c5c70e7093f694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 1020248148}
-  directionalLight: {fileID: 1735837485}
-  target: {fileID: 692255151}
-  speed: 5
-  axis1: 10
-  axis2: 10
-  height: 10
+  slider: {fileID: 0}
+  directionalLight: {fileID: 0}
+  target: {fileID: 0}
+  speed: 0
+  axis1: 0
+  axis2: 0
+  height: 0
 --- !u!1 &1021363554
 GameObject:
   m_ObjectHideFlags: 0
@@ -2600,13 +2573,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef7d37a60478460c8efca8d401ce88b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshManager: {fileID: 1227896546}
-  arCamera: {fileID: 817649097}
+  meshManager: {fileID: 0}
+  arCamera: {fileID: 0}
   layersToInclude:
     serializedVersion: 2
-    m_Bits: 256
-  objectToPlace: {fileID: -927199367670048503, guid: 320b1c2af77554f99a1658df4a6d3d5c,
-    type: 3}
+    m_Bits: 0
+  objectToPlace: {fileID: 0}
 --- !u!114 &1227896546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3200,7 +3172,7 @@ PrefabInstance:
     - target: {fileID: 497130135674109206, guid: 6c220b4750bc1492981363ec91fc8aa6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 497130135674109206, guid: 6c220b4750bc1492981363ec91fc8aa6,
         type: 3}
