@@ -80,38 +80,29 @@ public class ARTapToPlaceObject : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
-        // Move object to touched position
-        if (spawnedObject != null && TryGetTouchPosition() != null)
-        {
-            Debug.Log("Move object to touched position");
+        //// Move object to touched position
+        //if (spawnedObject != null && TryGetTouchPosition() != null)
+        //{
+        //    Debug.Log("Move object to touched position");
 
-            float dis = Vector3.Distance(spawnedObject.transform.position, targetPosition);
-            Debug.Log("dis: " + dis);
+        //    float dis = Vector3.Distance(spawnedObject.transform.position, targetPosition);
+        //    Debug.Log("dis: " + dis);
 
-            float speed = 2.0f;
+        //    float speed = 2.0f;
 
-            if (dis >= 0.01f)
-            {
-                // Rotation
-                Vector3 dir = targetPosition - spawnedObject.transform.position;
-                Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
-                Quaternion targetRot = Quaternion.LookRotation(dirXZ);
-                spawnedObject.transform.rotation = Quaternion.RotateTowards(spawnedObject.transform.rotation, targetRot, 550.0f * Time.deltaTime);
+        //    if (dis >= 0.01f)
+        //    {
+        //        // Rotation
+        //        Vector3 dir = targetPosition - spawnedObject.transform.position;
+        //        Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
+        //        Quaternion targetRot = Quaternion.LookRotation(dirXZ);
+        //        spawnedObject.transform.rotation = Quaternion.RotateTowards(spawnedObject.transform.rotation, targetRot, 550.0f * Time.deltaTime);
 
-                // Movement
-                //spawnedObject.transform.localPosition = Vector3.MoveTowards(transform.position, hitPose.position, speed * Time.deltaTime);
-                spawnedObject.transform.localPosition = Vector3.Lerp(spawnedObject.transform.position, targetPosition, speed * Time.deltaTime);
-            }
-        }
-    }
-
-    public void ButtonClickEvent(string modelName)
-    {
-        Debug.Log("ButtonClickEvent()");
-        if (placementPoseIsValid)
-        {
-            PlaceObject(modelName);
-        }
+        //        // Movement
+        //        //spawnedObject.transform.localPosition = Vector3.MoveTowards(transform.position, hitPose.position, speed * Time.deltaTime);
+        //        spawnedObject.transform.localPosition = Vector3.Lerp(spawnedObject.transform.position, targetPosition, speed * Time.deltaTime);
+        //    }
+        //}
     }
 
     Vector3 TryGetTouchPosition()
@@ -147,39 +138,9 @@ public class ARTapToPlaceObject : MonoBehaviour
         return targetPosition;
     }
 
-    private void PlaceObject(string modelName)
-    {
-        // Destroy existing model
-        GameObject[] respawn = GameObject.FindGameObjectsWithTag("ModelName");
-        foreach (var t in respawn)
-        {
-            Destroy(t);
-        }
-
-        string dir = "Models/" + modelName + "/" + modelName;
-        Debug.Log("modelName: " + modelName);
-
-        string aniDir = "Animations/Walking";
-        Debug.Log("dir: " + dir);
-
-        // Create a new model with animation
-        Animator animator;
-
-        if (Resources.LoadAll<GameObject>(dir).Length != 0)
-        {
-            Debug.Log("Resources.Load(dir, typeof(GameObject)): " + Resources.Load(dir, typeof(GameObject)).ToString());
-            spawnedObject = Instantiate(Resources.Load(dir, typeof(GameObject)), placementPose.position, placementPose.rotation) as GameObject;
-            Debug.Log("spawnedObject: " + spawnedObject);
-            spawnedObject.tag = "ModelName";
-            animator = spawnedObject.GetComponent<Animator>();
-            Debug.Log(animator);
-            spawnedObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(aniDir);
-        }
-    }
-
     private void UpdatePlacementPose()
     {
-        var screenCenter = arCamera.GetComponent<Camera>().ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
         //var hits = new List<ARRaycastHit>();
         arManager.Raycast(screenCenter, hits, TrackableType.Planes);
 
@@ -189,7 +150,7 @@ public class ARTapToPlaceObject : MonoBehaviour
         {
             placementPose = hits[0].pose;
 
-            var cameraForward = -1 * arCamera.GetComponent<Camera>().transform.forward;
+            var cameraForward = -1 * Camera.current.transform.forward;
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
