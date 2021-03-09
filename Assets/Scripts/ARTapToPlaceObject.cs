@@ -149,7 +149,8 @@ public class ARTapToPlaceObject : MonoBehaviour
 
                         Debug.Log("targetPosition: " + targetPosition.ToString());
 
-                        Instantiate(light, targetLightPosition.position, targetLightPosition.rotation);
+                        Instantiate(light, Vector3.zero, Quaternion.identity);
+                        light.transform.SetPositionAndRotation(targetLightPosition.position, targetLightPosition.rotation);
                         Debug.Log("Light: " + light.ToString());
                         Debug.Log("Light Transform: " + targetLightPosition.position.ToString() + "/" + targetLightPosition.rotation.ToString());
                         light.transform.LookAt(spawnedObject.transform);
