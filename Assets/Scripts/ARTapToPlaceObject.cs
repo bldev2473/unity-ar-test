@@ -26,6 +26,7 @@ public class ARTapToPlaceObject : MonoBehaviour
     public Button destoryAllObjectButton;
 
     // Object placement
+    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
     private ARRaycastManager arManager;
     public GameObject placementIndicator;
     private Pose placementPose;
@@ -37,7 +38,10 @@ public class ARTapToPlaceObject : MonoBehaviour
     private GameObject spawnedObject;
     private bool isMoving = false;
 
-    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    // Light
+    public Light light;
+    public Pose targetLightPosition;
+    public Button addLightSourceButton;
 
     // Start is called before the first frame update
     void Start()
@@ -72,6 +76,18 @@ public class ARTapToPlaceObject : MonoBehaviour
                 arSession.Reset();
             });
         }
+
+        // Assign prefab in insepctor and place object with button click event
+        if (addLightSourceButton != null)
+        {
+            addLightSourceButton.onClick.AddListener(() =>
+            {
+                Instantiate(light, targetLightPosition.position, targetLightPosition.rotation);
+                Debug.Log("Light: " + light.ToString());
+                Debug.Log("Light Transform: " + targetLightPosition.position.ToString() + "/" + targetLightPosition.rotation.ToString());
+                light.transform.LookAt(spawnedObject.transform);
+            });
+        }
     }
 
     // Update is called once per frame
@@ -79,6 +95,7 @@ public class ARTapToPlaceObject : MonoBehaviour
     {
         UpdatePlacementPose();
         UpdatePlacementIndicator();
+        TryGetTouchPosition();
 
         //// Move object to touched position
         //if (spawnedObject != null && TryGetTouchPosition() != null)
@@ -127,9 +144,15 @@ public class ARTapToPlaceObject : MonoBehaviour
                     if (arManagerRaycast)
                     {
                         var hitPose = hits[0].pose;
+                        targetLightPosition = hitPose;
                         targetPosition = hitPose.position;
 
                         Debug.Log("targetPosition: " + targetPosition.ToString());
+
+                        Instantiate(light, targetLightPosition.position, targetLightPosition.rotation);
+                        Debug.Log("Light: " + light.ToString());
+                        Debug.Log("Light Transform: " + targetLightPosition.position.ToString() + "/" + targetLightPosition.rotation.ToString());
+                        light.transform.LookAt(spawnedObject.transform);
                     }
                 }
             }
