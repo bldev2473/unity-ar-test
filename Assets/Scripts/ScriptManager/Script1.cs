@@ -10,13 +10,7 @@ public class Script1 : MonoBehaviour, ScriptManagerInterface
 
     public void OnCompleted()
     {
-        ScriptManager.OnCompleted += CustomAction;
-    }
-
-    Tuple<MonoBehaviour, System.Object> CustomAction()
-    {
-        this.enabled = false;
-        return Tuple.Create((MonoBehaviour)this, CrossScriptInfo);
+        ScriptManager.OnCompletedCallback(this, CrossScriptInfo);
     }
 
     // Start is called before the first frame update

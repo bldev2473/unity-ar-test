@@ -16,7 +16,7 @@ public class ScriptManager : MonoBehaviour
     public delegate Tuple<MonoBehaviour, System.Object> ScriptCompletedAction();
     public static event ScriptCompletedAction OnCompleted;
 
-    private Tuple<MonoBehaviour, System.Object> CurrentScript;
+    public static Tuple<MonoBehaviour, System.Object> CurrentScript;
 
     [SerializeField]
     private Script1 ModelSelectManager;
@@ -39,10 +39,12 @@ public class ScriptManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (OnCompleted != null)
-        {
-            CurrentScript = OnCompleted();
-            ScriptManager.OnCompleted = null;
-        }
+    
+    }
+    
+    void OnCompletedCallback(MonoBehaviour script, System.Object crossScriptInfo)
+    {
+        script.enabled = false;
+        CurrentScript = Tuple.Create(script, crossScriptInfo)
     }
 }
