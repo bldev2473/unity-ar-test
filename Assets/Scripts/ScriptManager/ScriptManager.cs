@@ -42,9 +42,17 @@ public class ScriptManager : MonoBehaviour
     
     }
     
-    void OnCompletedCallback(MonoBehaviour script, System.Object crossScriptInfo)
+    static void OnCompletedCallback(MonoBehaviour script, System.Object crossScriptInfo)
     {
         script.enabled = false;
-        CurrentScript = Tuple.Create(script, crossScriptInfo)
+        CurrentScript = Tuple.Create(script, crossScriptInfo);
+        
+        // Make next script enabled true
+        
+    }
+    
+    static Tuple<MonoBehaviour, System.Object> OnInitiatedCallback()
+    {
+        return CurrentScript
     }
 }
