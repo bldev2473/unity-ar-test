@@ -12,5 +12,6 @@ using UnityEngine;
  */
 interface ScriptManagerInterface
 {
-    void OnCompleted(); 
+    void OnCompleted();
+    void OnInitiated();
 }

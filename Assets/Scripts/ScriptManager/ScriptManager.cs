@@ -53,6 +53,6 @@ public class ScriptManager : MonoBehaviour
     
     static Tuple<MonoBehaviour, System.Object> OnInitiatedCallback()
     {
-        return CurrentScript
+        return CurrentScript;
     }
 }

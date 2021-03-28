@@ -8,9 +8,14 @@ public class Script1 : MonoBehaviour, ScriptManagerInterface
 {
     System.Object CrossScriptInfo;
 
-    public void OnCompleted()
+    void OnCompleted()
     {
         ScriptManager.OnCompletedCallback(this, CrossScriptInfo);
+    }
+    
+    void OnInitiated()
+    {
+        ScriptManager.OnInitiatedCallback();
     }
 
     // Start is called before the first frame update
