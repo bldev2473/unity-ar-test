@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static ScriptManager;
 
 public class Script1 : MonoBehaviour, ScriptManagerInterface
 {
@@ -10,6 +8,7 @@ public class Script1 : MonoBehaviour, ScriptManagerInterface
 
     public void OnCompleted()
     {
+        CrossScriptInfo = "Script1 Info";
         ScriptManager.OnCompletedCallback(this, CrossScriptInfo);
     }
 
@@ -22,6 +21,7 @@ public class Script1 : MonoBehaviour, ScriptManagerInterface
     void Start()
     {
         Debug.Log("Script1 Start called.");
+        OnInitiated();
         OnCompleted();
     }
 
