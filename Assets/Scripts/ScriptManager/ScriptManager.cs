@@ -19,21 +19,26 @@ public class ScriptManager : MonoBehaviour
     public static Tuple<MonoBehaviour, System.Object> CurrentScript;
 
     [SerializeField]
-    private Script1 ModelSelectManager;
+    private Script1 Script1;
     [SerializeField]
-    private Script2 HumanDetectionManager;
+    private Script2 Script2;
     [SerializeField]
-    private Script3 ARInteractionManager;
+    private Script3 Script3;
     [SerializeField]
-    private Script4 AnimationControlManager;
+    private Script4 Script4;
+
+    private static Hashtable listTable = new Hashtable();
 
     // Start is called before the first frame update
     void Start()
     {
-        ModelSelectManager.enabled = true;
-        HumanDetectionManager.enabled = false;
-        ARInteractionManager.enabled = false;
-        AnimationControlManager.enabled = false;
+        listTable.Add("Script1", new List<MonoBehaviour> { Script2 } );
+        listTable.Add("Script2", new List<MonoBehaviour> { Script3, Script4 });
+
+        Script1.enabled = true;
+        Script2.enabled = false;
+        Script3.enabled = false;
+        Script4.enabled = false;
     }
 
     // Update is called once per frame
@@ -42,16 +47,22 @@ public class ScriptManager : MonoBehaviour
     
     }
     
-    static void OnCompletedCallback(MonoBehaviour script, System.Object crossScriptInfo)
+    public static void OnCompletedCallback(MonoBehaviour script, System.Object crossScriptInfo)
     {
         script.enabled = false;
         CurrentScript = Tuple.Create(script, crossScriptInfo);
-        
-        // Make next script enabled true
-        
+
+        // Make next scripts enabled true
+        var scriptName = script.GetType().Name as string;
+        List<MonoBehaviour> scriptList = (List<MonoBehaviour>)listTable[scriptName];
+
+        foreach (var nextScript in scriptList)
+        {
+            nextScript.enabled = true;
+        }
     }
-    
-    static Tuple<MonoBehaviour, System.Object> OnInitiatedCallback()
+
+    public static Tuple<MonoBehaviour, System.Object> OnInitiatedCallback()
     {
         return CurrentScript;
     }
