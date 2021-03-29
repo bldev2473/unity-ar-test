@@ -16,7 +16,7 @@ public class ScriptManager : MonoBehaviour
     public delegate void OnClickAction();
     public static event OnClickAction OnClick;
 
-    public static Tuple<MonoBehaviour, System.Object> CurrentScript;
+    public static Tuple<string, System.Object> CurrentScript;
 
     //[SerializeField]
     //private Script1 Script1;
@@ -28,7 +28,7 @@ public class ScriptManager : MonoBehaviour
     //private Script4 Script4;
 
     [SerializeField]
-    private ModelSelectPopup ModelSelectPopup;
+    private ModelSelectManager ModelSelectManager;
     [SerializeField]
     private ARKitCoachingOverlay ARKitCoachingOverlay;
     [SerializeField]
@@ -36,7 +36,12 @@ public class ScriptManager : MonoBehaviour
     [SerializeField]
     private ARTapToPlaceObject ARTapToPlaceObject;
 
-    private static Hashtable listTable = new Hashtable();
+    private static Hashtable scriptListTable = new Hashtable();
+
+    // Canvas
+    [SerializeField]
+    private GameObject m_Panel;
+    private static GameObject m_ARPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -49,12 +54,17 @@ public class ScriptManager : MonoBehaviour
         //Script3.enabled = false;
         //Script4.enabled = false;
 
-        listTable.Add("ModelSelectPopup", new List<MonoBehaviour> { ARKitCoachingOverlay });
-        listTable.Add("ARKitCoachingOverlay", new List<MonoBehaviour> { ARTapToPlaceObject });
+        scriptListTable.Add("ModelSelectManager", new List<MonoBehaviour> { ARKitCoachingOverlay });
+        scriptListTable.Add("ARKitCoachingOverlay", new List<MonoBehaviour> { ARTapToPlaceObject });
 
-        ModelSelectPopup.enabled = true;
+        ModelSelectManager.enabled = true;
         ARKitCoachingOverlay.enabled = false;
         ARTapToPlaceObject.enabled = false;
+
+        m_ARPanel = m_Panel;
+
+        //This outputs what language your system is in
+        Debug.Log("This system is in " + Application.systemLanguage);
     }
 
     // Update is called once per frame
@@ -71,26 +81,28 @@ public class ScriptManager : MonoBehaviour
         {
             MonoBehaviour m_script = (MonoBehaviour)script;
             m_script.enabled = false;
-
-            CurrentScript = Tuple.Create(m_script, crossScriptInfo);
-
             scriptName = m_script.GetType().Name as string;
-            
         }
         else
         {
             scriptName = script as string;
+            if (scriptName == "ARKitCoachingOverlay")
+            {
+                m_ARPanel.SetActive(true);
+            }
         }
 
+        CurrentScript = Tuple.Create(scriptName, crossScriptInfo);
+
         // Make next scripts enabled true
-        List<MonoBehaviour> scriptList = (List<MonoBehaviour>)listTable[scriptName];
+        List<MonoBehaviour> scriptList = (List<MonoBehaviour>)scriptListTable[scriptName];
         foreach (var nextScript in scriptList)
         {
             nextScript.enabled = true;
         }
     }
 
-    public static Tuple<MonoBehaviour, System.Object> OnInitiatedCallback()
+    public static Tuple<string, System.Object> OnInitiatedCallback()
     {
         return CurrentScript;
     }

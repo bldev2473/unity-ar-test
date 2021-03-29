@@ -13,7 +13,7 @@ public class CustomSessionDelegate : DefaultARKitSessionDelegate
     protected override void OnCoachingOverlayViewDidDeactivate(ARKitSessionSubsystem sessionSubsystem)
     {
         Logger.Log(nameof(OnCoachingOverlayViewDidDeactivate));
-        ScriptManager.OnCompletedCallback("ARKitCoachingOverlay", "ARCoachingOverlay OnEnabled");
+        ScriptManager.OnCompletedCallback("ARKitCoachingOverlay", "ARKitCoachingOverlay OnDisabled");
     }
 }
 #endif

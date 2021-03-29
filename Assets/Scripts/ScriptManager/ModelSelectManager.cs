@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModelSelectPopup : MonoBehaviour, ScriptManagerInterface
+public class ModelSelectManager : MonoBehaviour, ScriptManagerInterface
 {
     System.Object CrossScriptInfo;
 

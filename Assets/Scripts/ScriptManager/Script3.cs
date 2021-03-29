@@ -14,7 +14,7 @@ public class Script3 : MonoBehaviour, ScriptManagerInterface
 
     public void OnInitiated()
     {
-        Tuple<MonoBehaviour, System.Object> ScriptInfoFrom = ScriptManager.OnInitiatedCallback();
+        Tuple<string, System.Object> ScriptInfoFrom = ScriptManager.OnInitiatedCallback();
         Debug.Log("Script2 Info: " + ScriptInfoFrom.Item2);
     }
 
