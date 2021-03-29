@@ -13,32 +13,48 @@ public class ScriptManager : MonoBehaviour
      * 5. 사람 인식/터치 인식/애니케이션 컨트롤
      */
 
-    public delegate Tuple<MonoBehaviour, System.Object> ScriptCompletedAction();
-    public static event ScriptCompletedAction OnCompleted;
+    public delegate void OnClickAction();
+    public static event OnClickAction OnClick;
 
     public static Tuple<MonoBehaviour, System.Object> CurrentScript;
 
+    //[SerializeField]
+    //private Script1 Script1;
+    //[SerializeField]
+    //private Script2 Script2;
+    //[SerializeField]
+    //private Script3 Script3;
+    //[SerializeField]
+    //private Script4 Script4;
+
     [SerializeField]
-    private Script1 Script1;
+    private ModelSelectPopup ModelSelectPopup;
     [SerializeField]
-    private Script2 Script2;
+    private ARKitCoachingOverlay ARKitCoachingOverlay;
     [SerializeField]
-    private Script3 Script3;
+    private PlaneDetectionManager PlaneDetectionManager;
     [SerializeField]
-    private Script4 Script4;
+    private ARTapToPlaceObject ARTapToPlaceObject;
 
     private static Hashtable listTable = new Hashtable();
 
     // Start is called before the first frame update
     void Start()
     {
-        listTable.Add("Script1", new List<MonoBehaviour> { Script2 } );
-        listTable.Add("Script2", new List<MonoBehaviour> { Script3, Script4 });
+        //listTable.Add("Script1", new List<MonoBehaviour> { Script2 } );
+        //listTable.Add("Script2", new List<MonoBehaviour> { Script3, Script4 });
 
-        Script1.enabled = true;
-        Script2.enabled = false;
-        Script3.enabled = false;
-        Script4.enabled = false;
+        //Script1.enabled = true;
+        //Script2.enabled = false;
+        //Script3.enabled = false;
+        //Script4.enabled = false;
+
+        listTable.Add("ModelSelectPopup", new List<MonoBehaviour> { ARKitCoachingOverlay });
+        listTable.Add("ARKitCoachingOverlay", new List<MonoBehaviour> { ARTapToPlaceObject });
+
+        ModelSelectPopup.enabled = true;
+        ARKitCoachingOverlay.enabled = false;
+        ARTapToPlaceObject.enabled = false;
     }
 
     // Update is called once per frame
@@ -47,15 +63,27 @@ public class ScriptManager : MonoBehaviour
     
     }
     
-    public static void OnCompletedCallback(MonoBehaviour script, System.Object crossScriptInfo)
+    public static void OnCompletedCallback(object script, System.Object crossScriptInfo)
     {
-        script.enabled = false;
-        CurrentScript = Tuple.Create(script, crossScriptInfo);
+        var scriptName = "";
+
+        if (script is MonoBehaviour)
+        {
+            MonoBehaviour m_script = (MonoBehaviour)script;
+            m_script.enabled = false;
+
+            CurrentScript = Tuple.Create(m_script, crossScriptInfo);
+
+            scriptName = m_script.GetType().Name as string;
+            
+        }
+        else
+        {
+            scriptName = script as string;
+        }
 
         // Make next scripts enabled true
-        var scriptName = script.GetType().Name as string;
         List<MonoBehaviour> scriptList = (List<MonoBehaviour>)listTable[scriptName];
-
         foreach (var nextScript in scriptList)
         {
             nextScript.enabled = true;
