@@ -69,3 +69,10 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Xcode Project
+/unity-ar-test/
+
+# Assets from asset store
+/Assets/3D\ Model/
+/Assets/Plugins/

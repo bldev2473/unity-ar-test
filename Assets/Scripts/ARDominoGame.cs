@@ -1,43 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using System;
 
-using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(ARRaycastManager))]
-public class ARTapToPlaceObject : MonoBehaviour
+public class ARDominoGame : MonoBehaviour
 {
     // AR Foundation
     private Camera arCamera;
     private ARSession arSession;
 
     // Static singleton property
-    public static ARTapToPlaceObject Instance { get; private set; }
+    public static ARDominoGame Instance { get; private set; }
 
     // Assign prefab in insepctor and place object with button click event
     public Button placeObjectButton;
     public GameObject objectToPlace;
 
-    public Button destoryAllObjectButton;
-
     // Object placement
     private ARRaycastManager arManager;
+    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
     public GameObject placementIndicator;
     private Pose placementPose;
     private bool placementPoseIsValid = false;
+
+    // Dominos
+    public Button pushDominoButton;
+    private List<GameObject> dominos = new List<GameObject>();
+    public Button increaseForceButton;
+    public Button decreaseForceButton;
+    private float force = 20;
+    public Text forceText;
+
+    public Button destoryAllObjectButton;
 
     // Touch and move
     private Vector2 touchPosition;
     private Vector3 targetPosition;
     private GameObject spawnedObject;
     private bool isMoving = false;
-
-    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +65,48 @@ public class ARTapToPlaceObject : MonoBehaviour
         {
             placeObjectButton.onClick.AddListener(() =>
             {
-                spawnedObject = Instantiate(objectToPlace, placementPose.position, placementPose.rotation);
+                dominos.Add(Instantiate(objectToPlace, placementPose.position, placementPose.rotation));
+            });
+        }
+
+        // Assign prefab in insepctor and place object with button click event
+        if (pushDominoButton != null && objectToPlace != null)
+        {
+            pushDominoButton.onClick.AddListener(() =>
+            {
+                if (dominos.Count > 0)
+                {
+                    GameObject firstDomino = dominos[0];
+                    Debug.Log("firstDomino: " + firstDomino.ToString());
+
+                    Vector3 direction = firstDomino.transform.position - transform.position;
+                    //firstDomino.GetComponent<Rigidbody>().AddForceAtPosition(direction.normalized, transform.position);
+                    Debug.Log("rigidbody: " + firstDomino.GetComponentInChildren<Rigidbody>());
+
+                    var cameraForward = arCamera.GetComponent<Camera>().transform.forward;
+                    var cameraBearing = new Vector3(cameraForward.x, 0, 0).normalized;
+                    firstDomino.GetComponentInChildren<Rigidbody>().AddForce(cameraBearing * force);
+                }
+            });
+        }
+
+        // Assign prefab in insepctor and place object with button click event
+        if (increaseForceButton != null)
+        {
+            increaseForceButton.onClick.AddListener(() =>
+            {
+                force += 5;
+                forceText.text = force.ToString();
+            });
+        }
+
+        // Assign prefab in insepctor and place object with button click event
+        if (decreaseForceButton != null)
+        {
+            decreaseForceButton.onClick.AddListener(() =>
+            {
+                force -= 5;
+                forceText.text = force.ToString();
             });
         }
 
@@ -68,7 +115,9 @@ public class ARTapToPlaceObject : MonoBehaviour
         {
             destoryAllObjectButton.onClick.AddListener(() =>
             {
-                SceneManager.LoadScene("ARScene");
+                Destroy(GameObject.FindWithTag("Dominos"));
+                dominos.Clear();
+
                 arSession.Reset();
             });
         }
@@ -80,6 +129,7 @@ public class ARTapToPlaceObject : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
+        /*
         // Move object to touched position
         if (spawnedObject != null && TryGetTouchPosition() != null)
         {
@@ -103,6 +153,7 @@ public class ARTapToPlaceObject : MonoBehaviour
                 spawnedObject.transform.localPosition = Vector3.Lerp(spawnedObject.transform.position, targetPosition, speed * Time.deltaTime);
             }
         }
+        */
     }
 
     public void ButtonClickEvent(string modelName)
@@ -118,76 +169,42 @@ public class ARTapToPlaceObject : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
-            Touch touch = Input.GetTouch(0);
+            touchPosition = Input.GetTouch(0).position;
+            Debug.Log("touchPosition: " + touchPosition.ToString());
 
-            // Prevent touch input on UI object from AR feature
-            if (touch.phase == TouchPhase.Began)
+            bool arManagerRaycast = arManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon);
+            Debug.Log("arManagerRaycast: " + arManagerRaycast.ToString());
+
+            if (arManagerRaycast)
             {
-                touchPosition = touch.position;
-                Debug.Log("touchPosition: " + touchPosition.ToString());
-
-                bool isOverUI = touchPosition.IsPointOverUIObject();
-
-                if (!isOverUI)
-                {
-                    bool arManagerRaycast = arManager.Raycast(touchPosition, hits, TrackableType.PlaneWithinPolygon);
-                    Debug.Log("arManagerRaycast: " + arManagerRaycast.ToString());
-
-                    if (arManagerRaycast)
-                    {
-                        var hitPose = hits[0].pose;
-                        targetPosition = hitPose.position;
-
-                        Debug.Log("targetPosition: " + targetPosition.ToString());
-                    }
-                }
+                var hitPose = hits[0].pose;
+                targetPosition = hitPose.position;
             }
         }
+        Debug.Log("targetPosition: " + targetPosition.ToString());
 
         return targetPosition;
     }
 
     private void PlaceObject(string modelName)
     {
-        // Destroy existing model
-        GameObject[] respawn = GameObject.FindGameObjectsWithTag("ModelName");
-        foreach (var t in respawn)
-        {
-            Destroy(t);
-        }
-
-        string dir = "Models/" + modelName + "/" + modelName;
-        Debug.Log("modelName: " + modelName);
-
-        string aniDir = "Animations/Walking";
-        Debug.Log("dir: " + dir);
-
-        // Create a new model with animation
-        Animator animator;
-
-        if (Resources.LoadAll<GameObject>(dir).Length != 0)
-        {
-            Debug.Log("Resources.Load(dir, typeof(GameObject)): " + Resources.Load(dir, typeof(GameObject)).ToString());
-            spawnedObject = Instantiate(Resources.Load(dir, typeof(GameObject)), placementPose.position, placementPose.rotation) as GameObject;
-            Debug.Log("spawnedObject: " + spawnedObject);
-            spawnedObject.tag = "ModelName";
-            animator = spawnedObject.GetComponent<Animator>();
-            Debug.Log(animator);
-            spawnedObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(aniDir);
-        }
+        
     }
 
     private void UpdatePlacementPose()
     {
         var screenCenter = arCamera.GetComponent<Camera>().ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        Debug.Log("screenCenter: " + screenCenter);
         //var hits = new List<ARRaycastHit>();
         arManager.Raycast(screenCenter, hits, TrackableType.Planes);
 
         placementPoseIsValid = hits.Count > 0;
+        Debug.Log("placementPoseIsValid: " + placementPoseIsValid.ToString());
 
         if (placementPoseIsValid)
         {
             placementPose = hits[0].pose;
+            Debug.Log("placementPose: " + placementPose.ToString());
 
             var cameraForward = -1 * arCamera.GetComponent<Camera>().transform.forward;
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
@@ -201,6 +218,7 @@ public class ARTapToPlaceObject : MonoBehaviour
         {
             placementIndicator.SetActive(true);
             placementIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
+            Debug.Log("placementIndicator: " + placementIndicator.ToString());
         }
         else
         {
