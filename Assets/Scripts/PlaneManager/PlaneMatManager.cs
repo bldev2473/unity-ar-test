@@ -7,28 +7,44 @@ public class PlaneMatManager : MonoBehaviour
 {
     [SerializeField]
     private ARPlaneManager m_ARPlaneManager;
+    [SerializeField]
+    private GameObject planeWithShadow;
+    [SerializeField]
+    private GameObject planeWithShadowAndVisualizer;
 
+    bool isPressed;
     Material planeMaterial;
 
     // Start is called before the first frame update
     void Start()
     {
-        planeMaterial = m_ARPlaneManager.planePrefab.GetComponent<MeshRenderer>().sharedMaterials[1];
+        m_ARPlaneManager.planePrefab = planeWithShadowAndVisualizer;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (isPressed)
+        {
+            m_ARPlaneManager.planePrefab = planeWithShadow;
+            Debug.Log("isPressed true");
+        }
+        else
+        {
+            m_ARPlaneManager.planePrefab = planeWithShadowAndVisualizer;
+            Debug.Log("isPressed false");
+        }
     }
 
     public void OnPress()
     {
-        m_ARPlaneManager.planePrefab.GetComponent<MeshRenderer>().sharedMaterials[1] = null;
+        isPressed = true;
+        Debug.Log("OnPress");
     }
 
     public void OnRelease()
     {
-        m_ARPlaneManager.planePrefab.GetComponent<MeshRenderer>().sharedMaterials[1] = planeMaterial;
+        isPressed = false;
+        Debug.Log("OnRelease");
     }
 }
