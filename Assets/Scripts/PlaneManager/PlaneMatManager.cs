@@ -14,11 +14,13 @@ public class PlaneMatManager : MonoBehaviour
 
     bool isPressed;
     Material planeMaterial;
+    ARPlaneMeshVisualizerOverride m_ARPlaneMeshVisualizerOverride;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_ARPlaneManager.planePrefab = planeWithShadowAndVisualizer;
+        m_ARPlaneMeshVisualizerOverride = planeWithShadowAndVisualizer.GetComponent<ARPlaneMeshVisualizerOverride>();
+        m_ARPlaneMeshVisualizerOverride.visibility = true;
     }
 
     // Update is called once per frame
@@ -26,25 +28,23 @@ public class PlaneMatManager : MonoBehaviour
     {
         if (isPressed)
         {
-            m_ARPlaneManager.planePrefab = planeWithShadow;
+            m_ARPlaneMeshVisualizerOverride.visibility = false;
             Debug.Log("isPressed true");
         }
         else
         {
-            m_ARPlaneManager.planePrefab = planeWithShadowAndVisualizer;
+            m_ARPlaneMeshVisualizerOverride.visibility = true;
             Debug.Log("isPressed false");
         }
     }
 
     public void OnPress()
     {
-        isPressed = true;
         Debug.Log("OnPress");
     }
 
     public void OnRelease()
     {
-        isPressed = false;
         Debug.Log("OnRelease");
     }
 }

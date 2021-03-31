@@ -188,6 +188,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AR Plane With Shadow&Visualizer
       objectReference: {fileID: 0}
+    - target: {fileID: 5976310049822464349, guid: 147bb98e3327042ef994a9faad62c391,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 147bb98e3327042ef994a9faad62c391, type: 3}
 --- !u!1001 &339583396
@@ -325,10 +330,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7210684325824575361}
     m_Modifications:
+    - target: {fileID: 2712541733570951781, guid: 47919a071803e4fd1be2285da69718a9,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 3079703106817955362, guid: 47919a071803e4fd1be2285da69718a9,
         type: 3}
       propertyPath: m_Name
       value: AR Plane With Shadow
+      objectReference: {fileID: 0}
+    - target: {fileID: 3079703106817955362, guid: 47919a071803e4fd1be2285da69718a9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988126527019690177, guid: 47919a071803e4fd1be2285da69718a9,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4988126527019690177, guid: 47919a071803e4fd1be2285da69718a9,
         type: 3}
@@ -1080,13 +1100,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1762731426}
-  m_LocalRotation: {x: 0.42977992, y: 0.45789725, z: -0.77352273, w: 0.08533477}
+  m_LocalRotation: {x: 0.33260512, y: 0.36934522, z: -0.8662461, w: -0.05075148}
   m_LocalPosition: {x: 64.6, y: 23.4, z: 37.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 51.42, y: 289.8, z: 155.2}
+  m_LocalEulerAnglesHint: {x: 37.31, y: 309.5, z: 155.2}
 --- !u!1 &1805060827
 GameObject:
   m_ObjectHideFlags: 0
@@ -2053,7 +2073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &7210684325899201308
 PrefabInstance:
   m_ObjectHideFlags: 0
