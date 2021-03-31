@@ -323,6 +323,8 @@ MonoBehaviour:
     type: 3}
   planeWithShadowAndVisualizer: {fileID: 5976310049822464349, guid: 147bb98e3327042ef994a9faad62c391,
     type: 3}
+  m_ARPlaneMeshVisualizerOverride: {fileID: 6713698176501284408, guid: 147bb98e3327042ef994a9faad62c391,
+    type: 3}
 --- !u!1001 &806601413
 PrefabInstance:
   m_ObjectHideFlags: 0

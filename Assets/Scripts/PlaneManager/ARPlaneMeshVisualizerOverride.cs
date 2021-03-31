@@ -12,7 +12,7 @@ public class ARPlaneMeshVisualizerOverride : MonoBehaviour
     /// </summary>
     public Mesh mesh { get; private set; }
 
-    public bool visibility { get; set; }
+    public bool toggleFlag { get; set; }
 
     void OnBoundaryChanged(ARPlaneBoundaryChangedEventArgs eventArgs)
     {
@@ -68,9 +68,21 @@ public class ARPlaneMeshVisualizerOverride : MonoBehaviour
         var visible = enabled &&
             (m_Plane.trackingState != TrackingState.None) &&
             (ARSession.state > ARSessionState.Ready) &&
+            (m_Plane.subsumedBy == null);
+
+        Debug.Log("visible: " + visible);
+
+        SetVisible(visible);
+    }
+
+    void UpdateVisibility(bool toggleFlag)
+    {
+        var visible = enabled &&
+            (m_Plane.trackingState != TrackingState.None) &&
+            (ARSession.state > ARSessionState.Ready) &&
             (m_Plane.subsumedBy == null) &&
-            visibility;
-        Debug.Log("visibility: " + visibility);
+            toggleFlag;
+
         Debug.Log("visible: " + visible);
 
         SetVisible(visible);
@@ -84,6 +96,7 @@ public class ARPlaneMeshVisualizerOverride : MonoBehaviour
 
     void OnEnable()
     {
+        toggleFlag = true;
         m_Plane.boundaryChanged += OnBoundaryChanged;
         UpdateVisibility();
         OnBoundaryChanged(default(ARPlaneBoundaryChangedEventArgs));
@@ -121,7 +134,10 @@ public class ARPlaneMeshVisualizerOverride : MonoBehaviour
         }
         else
         {
-            UpdateVisibility();
+            Debug.Log("toggleFlag: " + toggleFlag);
+
+            if (toggleFlag) UpdateVisibility();
+            else UpdateVisibility(toggleFlag);
         }
     }
 
